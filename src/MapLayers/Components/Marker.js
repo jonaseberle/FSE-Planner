@@ -293,6 +293,7 @@ function Marker({position, size, color, sim, allJobs, ...props}) {
       fillColor: color,
       type: type,
       allJobs: allJobs,
+      icao: props.icao,
     }
   )
     .bindPopup(() => {
