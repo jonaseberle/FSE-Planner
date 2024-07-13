@@ -85,7 +85,7 @@ const List = React.memo(({results, showDetail, goTo, setRoute, nbDisplay, sortBy
               marginRight: '1px'
             }
           }}
-          maxItems={5}
+          maxItems={15}
           itemsBeforeCollapse={3}
           onClick={(evt) => {
             // Show all ICAOs and do not display the result details when clicking the ... button
@@ -103,32 +103,56 @@ const List = React.memo(({results, showDetail, goTo, setRoute, nbDisplay, sortBy
                 goTo(icao)
               }}
               key={i}
-            >{icao}</Link>
+            >
+              <Tooltip title={numJobs(icao) + ' jobs'}>
+                {icao}
+                <Typography variant="body2"
+                            sx={{
+                              display: 'inline',
+                              marginLeft: '0.2em',
+                              color: "#888",
+                              fontSize: "0.8em"
+                            }}
+                >
+                  ({numJobs(icao)})
+                </Typography>
+              </Tooltip>
+            </Link>
           )}
         </Breadcrumbs>
-        <Grid container spacing={1} sx={{ mt: 1, ml: -2 }}>
-          <Grid item xs={4}>
-            <Typography variant="body2" sx={styles.gridText}><AttachMoneyIcon sx={styles.icon} />{result.pay}</Typography>
+        <React.Fragment>
+          <Typography variant="body2"
+                      sx={{
+                        color: "#888",
+                        fontSize: "0.8em"
+                      }}
+          >
+            {result.plane.model} {
+              result.reg &&
+              <span>({result.reg})</span>
+            }
+          </Typography>
+        </React.Fragment>
+        <Grid container spacing={1} sx={{mt: 1, ml: -2}}>
+          <Grid item xs={3}>
+            <Typography variant="body2" sx={styles.gridText}><AttachMoneyIcon sx={styles.icon} />{result.pay}
+            </Typography>
           </Grid>
-          <Grid item xs={4}>
-            <Typography variant="body2" sx={styles.gridText}><SettingsEthernetIcon sx={styles.icon} />{result.distance} NM</Typography>
+          <Grid item xs={3}>
+            <Typography variant="body2" sx={styles.gridText}><SettingsEthernetIcon
+              sx={styles.icon} />{result.distance} NM</Typography>
           </Grid>
-          <Grid item xs={4}>
-            <Typography variant="body2" sx={styles.gridText}><AccessTimeIcon sx={styles.icon} />{result.time}</Typography>
+          <Grid item xs={3}>
+            <Typography variant="body2" sx={styles.gridText}><AccessTimeIcon sx={styles.icon} />{result.time}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={3}>
+            <Typography variant="body2" sx={styles.gridText}><NumbersIcon sx={styles.icon} />
+              {result.icaos.length - 1}
+            </Typography>
           </Grid>
         </Grid>
-        <Typography
-          variant="body2"
-          sx={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            color: "#aaa",
-            fontSize: "0.8em"
-          }}
-        >
-          {filterText(sortBy, result)}
-        </Typography>
       </Box>
     )
   );
