@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import Paper from '@mui/material/Paper';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
@@ -26,6 +26,9 @@ import Link from '@mui/material/Link';
 import PDFRoute from './PDFRoute.js';
 import AddToFlight from '../Table/AddToFlight.js';
 import { pdf } from '@react-pdf/renderer';
+import {convertDistance, getDistance} from "geolib";
+
+import icaodata from "../data/icaodata.json";
 
 const styles = {
   focusAction: {
@@ -248,6 +251,22 @@ function Result({focus, setFocus, options, ...props}) {
         <Timeline align="right">
           {focus.icaos.map((icao, i) => {
             const onboard = i < focus.icaos.length-1 ? focus.cargos[i].TripOnly.reduce((acc, elm) => elm.from === icao ? acc : [...acc, elm], []) : [];
+            
+            let dist;
+            if (i < focus.icaos.length - 1) {
+              const from = icaodata[icao];
+              const fromLatLng = { latitude: from.lat, longitude: from.lon }
+              const to = icaodata[focus.icaos[i + 1]];
+              const toLatLng = { latitude: to.lat, longitude: to.lon }
+              dist = Math.round(convertDistance(getDistance(fromLatLng, toLatLng), 'sm'));
+            }
+
+            const toReadableTime = (time) => {
+              const h = Math.floor(time);
+              const min = Math.round((time - h) * 60);
+              return h + 'H' + (min > 9 ? min : "0" + min);
+            }
+
             return (
               <TimelineItem key={i}>
                 <TimelineOppositeContent
@@ -258,6 +277,14 @@ function Result({focus, setFocus, options, ...props}) {
                   }}
                 >
                   <Link href="#" onClick={evt => {evt.preventDefault(); props.actions.current.goTo(icao) }}>{icao}</Link>
+                  { dist &&
+                    <Typography variant="body2" sx={styles.gridText}>
+                      {/*<SettingsEthernetIcon sx={{width:20}}/>*/}
+                      <nobr>{dist} NM</nobr><br/>
+                      {toReadableTime(dist / focus.distance * focus.timeNb)}<br/>
+                      <nobr>{Math.ceil(dist * focus.distanceFactor / focus.distance * focus.fuel)} gal</nobr><br/>
+                    </Typography>
+                  }
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                   <TimelineDot
@@ -287,16 +314,25 @@ function Result({focus, setFocus, options, ...props}) {
                   { i === 0 &&
                     <React.Fragment>
                       { focus.reg ?
-                          <React.Fragment>
-                            <Typography variant="body2">Rent {focus.reg} {focus.rentalType} ({focus.plane.model})</Typography>
-                            <Typography variant="body2">Flight total bonus : ${focus.b}</Typography>
-                          </React.Fragment>
+                          <Typography variant="body2">Rent {focus.reg} {focus.rentalType} ({focus.plane.model})</Typography>
                         :
-                          <React.Fragment>
-                            <Typography variant="body2">Rent {focus.plane.model} ({focus.rentalType})</Typography>
-                            <Typography variant="body2">Flight total bonus : ${focus.b}</Typography>
-                          </React.Fragment>
+                          <Typography variant="body2">Rent {focus.plane.model} ({focus.rentalType})</Typography>
                       }
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          bgcolor: 'primary.light',
+                          color: '#fff',
+                          margin: '0 !important',
+                          padding: '2px 4px',
+                          borderRadius: 1
+                        }}
+                      >
+                        {focus.plane.speed} kts, {focus.plane.GPH} gal/h, {focus.plane.nmPerGal().toPrecision(2)} NM/gal
+                      </Typography>
+                      <Typography variant="body2">Flight total bonus : ${focus.b}</Typography>
+                      <Typography variant="body2">Ground fees : ${focus.feeGround}</Typography>
+                      <Typography variant="body2">Booking fees : ${focus.feeBooking}</Typography>
                       <Typography variant="body2" paragraph>Fuel usage : {focus.fuel} gallons</Typography>
                     </React.Fragment>
                   }
