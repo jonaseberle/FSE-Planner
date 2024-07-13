@@ -456,7 +456,7 @@ function LayerControl(props) {
           // If source is unbuilt airports
           if (layerRef.src === 'unbuilt') {
             if (unbuiltRef.current === null) {
-              fetch(process.env.REACT_APP_DYNAMIC_DATA_URL+'unbuilt.json').then(response => {
+              fetch(process.env.REACT_APP_DYNAMIC_DATA_URL_LOCAL+'unbuilt.json').then(response => {
                 if (response.ok) {
                   response.json().then(arr => {
                     unbuiltRef.current = arr;
