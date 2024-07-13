@@ -15,8 +15,11 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import NumbersIcon from '@mui/icons-material/Numbers';
 
 import IcaoSearch from './IcaoSearch.js';
+import { numJobs } from "../Storage";
+import Tooltip from "@mui/material/Tooltip";
 
 const styles = {
   icon: {
@@ -46,74 +49,89 @@ function filterText(sortBy, result) {
 
 // List of results
 const List = React.memo(({results, showDetail, goTo, setRoute, nbDisplay, sortBy}) => {
-  return (results.slice(0, nbDisplay).map(result =>
-    <Box
-      sx={{
-        padding: 3,
-        borderBottom: "1px solid #eee",
-        cursor: "pointer",
-        "&:hover": {
-          background: "#f9f9f9"
-        },
-        position: "relative"
-      }}
-      key={result.id}
-      onClick={() => showDetail(result)}
-      onMouseEnter={() => setRoute(result)}
-    >
-      <Breadcrumbs
-        separator={<NavigateNextIcon fontSize="small" />}
+  return (
+    results.slice(0, nbDisplay).map(result =>
+      <Box
         sx={{
-          '& .MuiBreadcrumbs-separator': {
-            marginLeft: '1px',
-            marginRight: '1px'
-          }
+          padding: 3,
+          borderBottom: "1px solid #eee",
+          cursor: "pointer",
+          "&:hover": {
+            background: "#f9f9f9"
+          },
+          position: "relative"
         }}
-        maxItems={5}
-        itemsBeforeCollapse={3}
-        onClick={(evt) => {
-          // Show all ICAOs and do not display the result details when clicking the ... button
-          if (evt.target.closest('button')) {
-            evt.stopPropagation();
-          }
-        }}
+        key={result.id}
+        onClick={() => showDetail(result)}
+        onMouseEnter={() => setRoute(result)}
       >
-        {result.icaos.map((icao, i) =>
-          <Link
-            href="#"
-            onClick={evt => {
+        <Typography
+          variant="body2"
+          sx={{
+            float: "right",
+            color: "#aaa",
+            fontSize: "0.8em",
+          }}
+        >
+          ${Math.round(result.payTime)}/h<br />
+          ${Math.round(result.payLeg)}/leg<br />
+        </Typography>
+
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          sx={{
+            '& .MuiBreadcrumbs-separator': {
+              marginLeft: '1px',
+              marginRight: '1px'
+            }
+          }}
+          maxItems={5}
+          itemsBeforeCollapse={3}
+          onClick={(evt) => {
+            // Show all ICAOs and do not display the result details when clicking the ... button
+            if (evt.target.closest('button')) {
               evt.stopPropagation();
-              evt.preventDefault();
-              goTo(icao)
-            }}
-            key={i}
-          >{icao}</Link>
-        )}
-      </Breadcrumbs>
-      <Grid container spacing={1} sx={{ mt: 1, ml: -2 }}>
-        <Grid size={4}>
-          <Typography variant="body2" sx={styles.gridText}><AttachMoneyIcon sx={styles.icon} />{result.pay}</Typography>
+            }
+          }}
+        >
+          {result.icaos.map((icao, i) =>
+            <Link
+              href="#"
+              onClick={evt => {
+                evt.stopPropagation();
+                evt.preventDefault();
+                goTo(icao)
+              }}
+              key={i}
+            >{icao}</Link>
+          )}
+        </Breadcrumbs>
+        <Grid container spacing={1} sx={{ mt: 1, ml: -2 }}>
+          <Grid item xs={4}>
+            <Typography variant="body2" sx={styles.gridText}><AttachMoneyIcon sx={styles.icon} />{result.pay}</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body2" sx={styles.gridText}><SettingsEthernetIcon sx={styles.icon} />{result.distance} NM</Typography>
+          </Grid>
+          <Grid item xs={4}>
+            <Typography variant="body2" sx={styles.gridText}><AccessTimeIcon sx={styles.icon} />{result.time}</Typography>
+          </Grid>
         </Grid>
-        <Grid size={4}>
-          <Typography variant="body2" sx={styles.gridText}><SettingsEthernetIcon sx={styles.icon} />{result.distance} NM</Typography>
-        </Grid>
-        <Grid size={4}>
-          <Typography variant="body2" sx={styles.gridText}><AccessTimeIcon sx={styles.icon} />{result.time}</Typography>
-        </Grid>
-      </Grid>
-      <Typography
-        variant="body2"
-        sx={{
-          position: "absolute",
-          top: 8,
-          right: 8,
-          color: "#aaa",
-          fontSize: "0.8em"
-        }}
-      >
-        {filterText(sortBy, result)}
-      </Typography>
-    </Box>));
+        <Typography
+          variant="body2"
+          sx={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            color: "#aaa",
+            fontSize: "0.8em"
+          }}
+        >
+          {filterText(sortBy, result)}
+        </Typography>
+      </Box>
+    )
+  );
 });
 
 
