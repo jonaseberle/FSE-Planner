@@ -141,4 +141,19 @@ class Storage {
 
 }
 
+const storage = new Storage();
+const jobs = storage.get('jobs', {}, true);
+
+function numJobs(fr) {
+  return Object.keys(jobs[fr] ?? {}).reduce(
+    (acc, to) => {
+      return acc + Object.keys(jobs[fr][to][2]).reduce(
+        (acc, jobType) => acc + jobs[fr][to][2][jobType].length, 0
+      )
+    }, 0
+  );
+}
+
+export { numJobs };
+
 export default Storage;
