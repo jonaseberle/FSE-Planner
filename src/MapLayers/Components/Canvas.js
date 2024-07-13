@@ -159,6 +159,67 @@ const Canvas = L.Canvas.extend({
     this._ctx.globalAlpha = 1;
     this._ctx.drawImage(canvas, p.x - r, p.y - r);
 
+    if (zoom > 4) {
+      const text = `${layer.options.icao}`;
+      this._ctx.font = "12px sans serif";
+      // const textMetrics = this._ctx.measureText(text);
+      this._ctx.fillStyle = "#fffb";
+      // this._ctx.fillRect(p.x - textMetrics.width / 2 - 1, p.y + r + 2, textMetrics.width + 2, 13);
+      this._ctx.fillStyle = "#000";
+      if (
+        [
+          // quattro8
+          'SCRA',
+          'SCES',
+          // flightwusel
+          'SCLC',
+          'SCCL',
+          'SCEC',
+          'SCIC',
+          'SCKD',
+          'SCLN',
+          'SCTL',
+          'SCVN',
+          'SCER',
+          'SCVM',
+          'SCHA',
+          'SCRG',
+          'SCAN',
+          'SCGE',
+          // AirOberland
+          'SCOT',
+          // rbasomb
+          'Z00X',
+          'SA0I',
+          'SAMQ',
+          //   rbasomb not yet in network
+          // 'SA1C',
+          // 'SA0G',
+          // mcuy
+          'SCVL',
+          'SCPV',
+          'SCAC',
+          //   mcuy not yet in network
+          'SCOS',
+          'SCST',
+          'SCON',
+          'SCTN',
+          'SCCC',
+          // Jotachenko not yet in network
+          // 'SAHZ',
+          // 'SAZY',
+          // 'SAZS',
+        ].includes(layer.options.icao)) {
+        this._ctx.fillStyle = "#fffb";
+        this._ctx.font = "bold 14px sans serif";
+        const textMetrics = this._ctx.measureText(text);
+        this._ctx.fillRect(p.x - textMetrics.width / 2 - 1, p.y + r + 1, textMetrics.width + 3, 14);
+        this._ctx.fillStyle = "#f08";
+        this._ctx.fillText(text, p.x - textMetrics.width / 2, p.y + r + 13);
+      }
+      // this._ctx.fillText(text, p.x - textMetrics.width / 2, p.y + r + 13);
+    }
+
     return r;
 
   },
