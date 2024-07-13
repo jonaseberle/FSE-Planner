@@ -1,4 +1,5 @@
 import L from "leaflet";
+import {numJobs} from "../../Storage";
 
 
 const Canvas = L.Canvas.extend({
@@ -28,6 +29,22 @@ const Canvas = L.Canvas.extend({
     const type = layer.options.type;
     const id = 'ID'+radius+'-'+color+'-'+fillColor;
     const p = layer._point;
+
+    const _numJobs = numJobs(layer.options.icao);
+    const maxJobsRadius = 1.;
+    const numJobsRadius = Math.pow(2, zoom) * (maxJobsRadius - maxJobsRadius * Math.exp(-.005 * _numJobs));
+    this._ctx.beginPath();
+    const gradient = this._ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, numJobsRadius);
+    gradient.addColorStop(.3, '#8d219c' + Math.max(30, Math.min(160, _numJobs * 2)).toString(16).padStart(2, '0'));
+    gradient.addColorStop(.5, '#8d219c00');
+
+    this._ctx.fillStyle = gradient;
+    this._ctx.fillRect(p.x - numJobsRadius, p.y - numJobsRadius, numJobsRadius * 2, numJobsRadius * 2);
+    this._ctx.arc(p.x, p.y, numJobsRadius, 0, 2 * Math.PI);
+    this._ctx.strokeStyle = '#8d219c66';
+    this._ctx.lineWidth = .8;
+    this._ctx.stroke();
+    this._ctx.beginPath();
 
     // Build the image if does not exists yet
     if (!this._icons[id]) {
@@ -133,7 +150,7 @@ const Canvas = L.Canvas.extend({
       octx.fill();
       octx.closePath();
 
-      octx.setTransform(1, 0, 0, 1, 0, 0);
+      // octx.setTransform(1, 0, 0, 1, 0, 0);
 
       this._icons[id][type][zoom] = {r: r, canvas: offscreen};
     }
