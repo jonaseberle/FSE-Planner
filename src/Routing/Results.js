@@ -15,8 +15,11 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import NumbersIcon from '@mui/icons-material/Numbers';
 
 import IcaoSearch from './IcaoSearch.js';
+import { numJobs } from "../Storage";
+import Tooltip from "@mui/material/Tooltip";
 
 const styles = {
   icon: {
@@ -62,6 +65,18 @@ const List = React.memo(({results, showDetail, goTo, setRoute, nbDisplay, sortBy
         onClick={() => showDetail(result)}
         onMouseEnter={() => setRoute(result)}
       >
+        <Typography
+          variant="body2"
+          sx={{
+            float: "right",
+            color: "#aaa",
+            fontSize: "0.8em",
+          }}
+        >
+          ${Math.round(result.payTime)}/h<br />
+          ${Math.round(result.payLeg)}/leg<br />
+        </Typography>
+
         <Breadcrumbs
           separator={<NavigateNextIcon fontSize="small" />}
           sx={{
