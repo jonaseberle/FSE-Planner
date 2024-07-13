@@ -1,6 +1,8 @@
 import L from "leaflet";
 import {numJobs} from "../../Storage";
+import Storage from '../../Storage.js';
 
+const storage = new Storage();
 
 const Canvas = L.Canvas.extend({
 
@@ -166,12 +168,9 @@ const Canvas = L.Canvas.extend({
       this._ctx.fillStyle = "#fffb";
       // this._ctx.fillRect(p.x - textMetrics.width / 2 - 1, p.y + r + 2, textMetrics.width + 2, 13);
       this._ctx.fillStyle = "#000";
-      if (
+      const isInteresting =
         [
-          // quattro8
-          'SCRA',
-          'SCES',
-          // flightwusel
+          // flightwusel Chile
           'SCLC',
           'SCCL',
           'SCEC',
@@ -179,42 +178,130 @@ const Canvas = L.Canvas.extend({
           'SCKD',
           'SCLN',
           'SCTL',
+          'SCQT',
+          'SCLL',
+          'SCSE',
           'SCVN',
           'SCER',
           'SCVM',
+          'SCBQ',
+          'SCTB',
           'SCHA',
           'SCRG',
           'SCAN',
+          'SCSF',
           'SCGE',
+          'SCPC',
+          'SCVD',
+          'SCTO',
+          'SCJO',
+          // interesting
+          'SCEL',
+          'SC0C',
+          'SCIE',
+          // SCVN-SCEC small airports
+          'SCVC',
+          'SCTQ',
           // AirOberland
           'SCOT',
           // rbasomb
+          'SCRA',
+          // 'SCES',
           'Z00X',
           'SA0I',
           'SAMQ',
+          'SA0G',
+          'SA1C',
+          // Panamericana
+          'SCTT',
+          'SCCF',
+          'SCDA',
+          'SKMD',
+          'SKAD',
+          'SKRG',
+          'MPTO',
+          'MROC',
+          'MSLP',
+          'MHTG',
+          'MHLM',
+          'MGGT',
+          'MZBZ',
+          'MRLB',
+          'MNMG',
+          'MMTM',
+          'MMVA',
+          // Panamericana Argentina
+          'SAOR',
+          'SAOC',
+          'SA0W',
+          'SAAN',
+          'SABE',
+          'SAEZ',
+          'SAZB',
+          'SAVV',
+          'SAVS',
+          'SA0Y',
+          'SA0P',
+          'SAWR',
+          'SCDW',
+          'SAWH',
+          'SAWT',
           //   rbasomb not yet in network
-          // 'SA1C',
           // 'SA0G',
           // mcuy
-          'SCVL',
-          'SCPV',
-          'SCAC',
+          // 'SCVL',
+          // 'SCPV',
+          // 'SCAC',
           //   mcuy not yet in network
-          'SCOS',
-          'SCST',
-          'SCON',
-          'SCTN',
-          'SCCC',
+          // 'SCOS',
+          // 'SCST',
+          // 'SCON',
+          // 'SCTN',
+          // 'SCCC',
           // Jotachenko not yet in network
           // 'SAHZ',
           // 'SAZY',
           // 'SAZS',
-        ].includes(layer.options.icao)) {
+        ].includes(layer.options.icao);
+      
+      const showAllIcaos = false;
+
+      const forsaleLayerVisible = storage.get('layers', [])
+        .filter(layer => {
+          return layer.info && layer.info.type === 'forsale' && layer.visible
+        })
+        .length > 0
+
+      if ((isInteresting || showAllIcaos) && !layer.options.forsale) {
         this._ctx.fillStyle = "#fffb";
         this._ctx.font = "bold 14px sans serif";
         const textMetrics = this._ctx.measureText(text);
         this._ctx.fillRect(p.x - textMetrics.width / 2 - 1, p.y + r + 1, textMetrics.width + 3, 14);
-        this._ctx.fillStyle = "#f08";
+        this._ctx.fillStyle = "#005e7d";
+        this._ctx.fillText(text, p.x - textMetrics.width / 2, p.y + r + 13);
+      }
+      
+      if (layer.options.forsale && forsaleLayerVisible) {
+        const intLength = (value, length = 4) => {
+          const units = ['k', 'M', 'B'];
+          let unitLength = 0;
+          let unit = '';
+
+          while (String(value).length > length - unitLength) {
+            value = Math.round(value / 1000);
+            unit = units.shift();
+            unitLength = 1;
+          }
+
+          return String(value) + unit;
+        }
+        
+        const text = `${showAllIcaos? layer.options.icao + ' ': ''}${intLength(layer.options.forsale)}`;
+        this._ctx.fillStyle = "#fffb";
+        this._ctx.font = "12px monospace";
+        const textMetrics = this._ctx.measureText(text);
+        this._ctx.fillRect(p.x - textMetrics.width / 2 - 1, p.y + r + 1, textMetrics.width + 3, 14);
+        this._ctx.fillStyle = "#a00f";
         this._ctx.fillText(text, p.x - textMetrics.width / 2, p.y + r + 13);
       }
       // this._ctx.fillText(text, p.x - textMetrics.width / 2, p.y + r + 13);
