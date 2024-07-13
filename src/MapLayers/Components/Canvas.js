@@ -258,15 +258,15 @@ const Canvas = L.Canvas.extend({
 
     const l = 20*ratio;
 
-    this._ctx.moveTo(p1.x - dx/2 + l * ax, p1.y - dy/2 + l * ay);
-    this._ctx.lineTo(p1.x - dx/2, p1.y - dy/2);
-    this._ctx.lineTo(p1.x - dx/2 + l * bx, p1.y - dy/2 + l * by);
-
-    if (layer.options.bothWays) {
-      this._ctx.moveTo(p1.x - dx/2 - l * ax, p1.y - dy/2 - l * ay);
-      this._ctx.lineTo(p1.x - dx/2, p1.y - dy/2);
-      this._ctx.lineTo(p1.x - dx/2 - l * bx, p1.y - dy/2 - l * by);
-    }
+    // this._ctx.moveTo(p1.x - dx/2 + l * ax, p1.y - dy/2 + l * ay);
+    // this._ctx.lineTo(p1.x - dx/2, p1.y - dy/2);
+    // this._ctx.lineTo(p1.x - dx/2 + l * bx, p1.y - dy/2 + l * by);
+    //
+    // if (layer.options.bothWays) {
+    //   this._ctx.moveTo(p1.x - dx/2 - l * ax, p1.y - dy/2 - l * ay);
+    //   this._ctx.lineTo(p1.x - dx/2, p1.y - dy/2);
+    //   this._ctx.lineTo(p1.x - dx/2 - l * bx, p1.y - dy/2 - l * by);
+    // }
 
     this._ctx.globalAlpha = layer.options.opacity;
     this._ctx.strokeStyle = layer.options.color;
