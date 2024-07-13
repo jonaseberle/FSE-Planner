@@ -284,6 +284,7 @@ const Routing = React.memo((props) => {
       allResults[i].time = h+'H'+(min > 9 ? min : "0"+min);
       allResults[i].timeNb = time;
       allResults[i].pay = Math.round(pay);
+      allResults[i].distanceFactor = totalDistance / allResults[i].distance;
       allResults[i].distance = Math.round(totalDistance);
       allResults[i].id = i;
       allResults[i].fuel = Math.ceil(fuelUsage);
@@ -561,7 +562,7 @@ const Routing = React.memo((props) => {
   return (
     <Box
       sx={{
-        width: 400,
+        width: 600,
         background: "#eee",
         boxShadow: "0 0 20px rgba(0, 0, 0, 0.3)",
         zIndex: 1000,

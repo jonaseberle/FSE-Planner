@@ -110,6 +110,9 @@ export class Plane {
     // Plane range: maximum length of a single leg
     this.range = Math.round(this.fuelCapacity / this.GPH * this.speed);
   }
+  nmPerGal() {
+    return this.speed / this.GPH;
+  }
   preciseMaxKg(tank) {
     // Compute fuel weight in kg at given fuel load
     const fuelKg = tank * 2.68735 * this.fuelCapacity;
