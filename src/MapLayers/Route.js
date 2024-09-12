@@ -55,11 +55,23 @@ function Route(props) {
     // Ensure only one line for both way legs
     if (rleg && fr > to) { continue; }
 
+    // Compute line weight
+    const max = 100;
+    const mw = parseFloat(s.display.legs.weights.passengers);
+    const min = props.options.min || 1;
+    const pay = rleg ? leg.flight.pay + rleg.flight.pay : leg.flight.pay;
+    const distanceWithShortRoutePenalty = leg.distance + 50;
+    const payPerNm = pay / distanceWithShortRoutePenalty;
+    let weight = parseFloat(s.display.legs.weights.base);
+    if (mw && max !== min) {
+      weight = Math.min(max, ((payPerNm-min) / (max-min)) * (mw - weight) + weight);
+    }
+    
     Job({
       positions: [[props.options.icaodata[fr].lat, props.options.icaodata[fr].lon], [props.options.icaodata[to].lat, props.options.icaodata[to].lon]],
       color: s.display.legs.colors.flight,
       highlight: s.display.legs.colors.highlight,
-      weight: parseFloat(s.display.legs.weights.flight),
+      weight: weight,
       leg: leg,
       rleg: rleg,
       actions: props.actions,
