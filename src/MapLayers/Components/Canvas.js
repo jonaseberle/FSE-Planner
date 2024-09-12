@@ -168,9 +168,6 @@ const Canvas = L.Canvas.extend({
       this._ctx.fillStyle = "#000";
       if (
         [
-          // quattro8
-          'SCRA',
-          'SCES',
           // flightwusel
           'SCLC',
           'SCCL',
@@ -185,22 +182,38 @@ const Canvas = L.Canvas.extend({
           'SCHA',
           'SCRG',
           'SCAN',
+          'SCSF',
           'SCGE',
+          'SCTO',
+          'SCJO',
+          // interesting
+          'SCEL',
+          'SCQT',
+          'SC0C',
+          'SVLL',
+          'SCSE',
+          'SCIE',
+          'SCVD',
+          // SCVN-SCEC small airports
+          'SCVC',
+          'SCTQ',
           // AirOberland
           'SCOT',
           // rbasomb
+          'SCRA',
+          'SCES',
           'Z00X',
           'SA0I',
           'SAMQ',
+          'SA1C',
           //   rbasomb not yet in network
-          // 'SA1C',
           // 'SA0G',
           // mcuy
           'SCVL',
           'SCPV',
           'SCAC',
           //   mcuy not yet in network
-          'SCOS',
+          // 'SCOS',
           'SCST',
           'SCON',
           'SCTN',
@@ -214,7 +227,7 @@ const Canvas = L.Canvas.extend({
         this._ctx.font = "bold 14px sans serif";
         const textMetrics = this._ctx.measureText(text);
         this._ctx.fillRect(p.x - textMetrics.width / 2 - 1, p.y + r + 1, textMetrics.width + 3, 14);
-        this._ctx.fillStyle = "#f08";
+        this._ctx.fillStyle = "#005e7d";
         this._ctx.fillText(text, p.x - textMetrics.width / 2, p.y + r + 13);
       }
       // this._ctx.fillText(text, p.x - textMetrics.width / 2, p.y + r + 13);
