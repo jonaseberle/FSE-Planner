@@ -35,7 +35,6 @@ function Jobs(props) {
   const group = L.layerGroup();
 
   let [legs, max] = cleanLegsWithFlight(props.options.jobs, props.options.flight, props.options);
-  max = 2000;
   const markers = getMarkers(legs, props.options);
   const markerJobs = Object.fromEntries(markers.map(m => [m, []]));
 
@@ -50,12 +49,13 @@ function Jobs(props) {
     if (rleg && fr > to) { continue; }
 
     // Compute line weight
+    max = 20000;
     const mw = parseFloat(s.display.legs.weights.passengers);
     const min = props.options.min || 1;
-    const amount = Math.min(max, rleg ? leg.amount + rleg.amount : leg.amount);
+    const pay = Math.min(max, rleg ? leg.pay + rleg.pay : leg.pay);
     let weight = parseFloat(s.display.legs.weights.base);
     if (mw && max !== min) {
-      weight = ((amount-min) / (max-min)) * (mw - weight) + weight;
+      weight = ((pay-min) / (max-min)) * (mw - weight) + weight;
     }
 
     // Compute color
@@ -71,7 +71,7 @@ function Jobs(props) {
       positions: [[props.options.icaodata[fr].lat, props.options.icaodata[fr].lon], [props.options.icaodata[to].lat, props.options.icaodata[to].lon]],
       color: color,
       highlight: s.display.legs.colors.highlight,
-      weight: Math.min(20, weight),
+      weight: weight,
       leg: leg,
       rleg: rleg,
       options: props.options,
