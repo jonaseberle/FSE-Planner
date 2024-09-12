@@ -64,7 +64,7 @@ function Jobs(props) {
     // Special color and weight if My assignments
     if (leg.flight || (rleg && rleg.flight)) {
       color = s.display.legs.colors.flight;
-      weight = parseFloat(s.display.legs.weights.flight);
+      //weight = parseFloat(s.display.legs.weights.flight);
     }
 
     const job = Job({
