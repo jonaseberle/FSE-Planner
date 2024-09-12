@@ -49,13 +49,15 @@ function Jobs(props) {
     if (rleg && fr > to) { continue; }
 
     // Compute line weight
-    max = 20000;
+    max = 100;
     const mw = parseFloat(s.display.legs.weights.passengers);
     const min = props.options.min || 1;
-    const pay = Math.min(max, rleg ? leg.pay + rleg.pay : leg.pay);
+    const pay = (leg.flight?.pay ?? 0) + leg.pay + (rleg?.flight?.pay ?? 0) + (rleg?.pay ?? 0);
+    const distanceWithShortRoutePenalty = leg.distance + 50;
+    const payPerNm = pay / distanceWithShortRoutePenalty;
     let weight = parseFloat(s.display.legs.weights.base);
     if (mw && max !== min) {
-      weight = ((pay-min) / (max-min)) * (mw - weight) + weight;
+      weight = Math.min(max, ((payPerNm-min) / (max-min)) * (mw - weight) + weight);
     }
 
     // Compute color
