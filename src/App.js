@@ -61,7 +61,8 @@ const defaultSettings = {
       colors: {
         passengers: '#3f51b5',
         highlight: 'yellow',
-        flight: 'darkred'
+        flight: 'darkred',
+        assignment: 'rgba(42,30,154,0.47)',
       },
       weights: {
         base: '1.2',
