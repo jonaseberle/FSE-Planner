@@ -169,6 +169,9 @@ const Canvas = L.Canvas.extend({
       if (
         [
           // flightwusel
+          'WABB',
+          'WABP',
+          'WAJJ',
           'SCLC',
           'SCCL',
           'SCEC',
