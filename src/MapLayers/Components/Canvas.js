@@ -168,10 +168,12 @@ const Canvas = L.Canvas.extend({
       this._ctx.fillStyle = "#000";
       if (
         [
-          // flightwusel
+          // flightwusel Indonesia
           'WABB',
           'WABP',
           'WAJJ',
+          'WA0E',
+          // flightwusel Chile
           'SCLC',
           'SCCL',
           'SCEC',
@@ -179,6 +181,9 @@ const Canvas = L.Canvas.extend({
           'SCKD',
           'SCLN',
           'SCTL',
+          'SCQT',
+          'SCLL',
+          'SCSE',
           'SCVN',
           'SCER',
           'SCVM',
@@ -187,16 +192,14 @@ const Canvas = L.Canvas.extend({
           'SCAN',
           'SCSF',
           'SCGE',
+          'SCPC',
+          'SCVD',
           'SCTO',
           'SCJO',
           // interesting
           'SCEL',
-          'SCQT',
           'SC0C',
-          'SVLL',
-          'SCSE',
           'SCIE',
-          'SCVD',
           // SCVN-SCEC small airports
           'SCVC',
           'SCTQ',
