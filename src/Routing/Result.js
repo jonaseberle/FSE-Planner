@@ -276,7 +276,28 @@ function Result({focus, setFocus, options, ...props}) {
                     marginTop: '-4px'
                   }}
                 >
-                  <Link href="#" onClick={evt => {evt.preventDefault(); props.actions.current.goTo(icao) }}>{icao}</Link>
+                  <Link href="#" onClick={evt => {evt.preventDefault(); props.actions.current.goTo(icao) }}>
+                    { 
+                      icaodata[icao][options.settings.display.sim][0] === icao? 
+                          icao
+                        : 
+                          <Fragment>
+                            <Box
+                              component="span"
+                              sx={{
+                                display: 'inline-block',
+                                marginRight: 1,
+                                textDecoration: 'line-through',
+                                textDecorationStyle: 'double',
+                                fontWeight: 300
+                              }}
+                            >
+                              {icao}
+                            </Box>
+                            {icaodata[icao][options.settings.display.sim][0]}
+                          </Fragment>
+                    }
+                  </Link>
                   { dist &&
                     <Typography variant="body2" sx={styles.gridText}>
                       {/*<SettingsEthernetIcon sx={{width:20}}/>*/}
