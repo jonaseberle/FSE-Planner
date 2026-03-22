@@ -213,6 +213,14 @@ const Canvas = L.Canvas.extend({
           'MNMG',
           'MMTM',
           'MMVA',
+          'MMMT',
+          // interesting Central America
+          'MMMY',
+          'MMLO',
+          'MMMX',
+          'MMVR',
+          'MMMD',
+          'MHRO',
           // Panamericana Argentina
           'SAOR',
           'SAOC',
