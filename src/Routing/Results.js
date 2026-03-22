@@ -132,7 +132,7 @@ const List = React.memo(({results, showDetail, goTo, setRoute, nbDisplay, sortBy
           </Typography>
         </Grid>
       </Grid>
-      <Typography
+      {/*<Typography
         variant="body2"
         sx={{
           position: "absolute",
@@ -143,7 +143,7 @@ const List = React.memo(({results, showDetail, goTo, setRoute, nbDisplay, sortBy
         }}
       >
         {filterText(sortBy, result)}
-      </Typography>
+      </Typography>*/}
     </Box>));
 });
 
