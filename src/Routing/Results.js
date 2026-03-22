@@ -117,16 +117,16 @@ const List = React.memo(({results, showDetail, goTo, setRoute, nbDisplay, sortBy
         }
       </Typography>
       <Grid container spacing={1} sx={{mt: 1, ml: -2}}>
-        <Grid size={4}>
+        <Grid size={3}>
           <Typography variant="body2" sx={styles.gridText}><AttachMoneyIcon sx={styles.icon} />{result.pay}</Typography>
         </Grid>
-        <Grid size={4}>
+        <Grid size={3}>
           <Typography variant="body2" sx={styles.gridText}><SettingsEthernetIcon sx={styles.icon} />{result.distance} NM</Typography>
         </Grid>
-        <Grid size={4}>
+        <Grid size={3}>
           <Typography variant="body2" sx={styles.gridText}><AccessTimeIcon sx={styles.icon} />{result.time}</Typography>
         </Grid>
-        <Grid size={4}>
+        <Grid size={3}>
           <Typography variant="body2" sx={styles.gridText}><NumbersIcon sx={styles.icon} />
             {result.icaos.length - 1}
           </Typography>
